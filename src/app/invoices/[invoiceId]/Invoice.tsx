@@ -34,15 +34,13 @@ interface InvoiceProps {
   }
 }
 
-
 export default function Invoice({ invoice }: InvoiceProps) {
   const [currentStatus, setCurrentStatus] = useOptimistic(invoice.status, (state, newStatus) => {
     return String(newStatus)
   })
 
-  /*************  ✨ Codeium Command ⭐  *************/
-  /******  8fb86ba5-ebee-4036-a100-fd9051149c22  *******/
   async function handleOnUpdateStatus(formData: FormData) {
+
     const originalStatus = currentStatus;
     setCurrentStatus(formData.get('status'))
     console.log('Updated status:', currentStatus);
@@ -51,6 +49,12 @@ export default function Invoice({ invoice }: InvoiceProps) {
     } catch {
       setCurrentStatus(originalStatus);
     }
+
+    // //Temporay solution for Badge visial update
+    // const refreshPage = () => {
+    //   window.location.reload();
+    // };
+    // refreshPage()
   };
 
   return (

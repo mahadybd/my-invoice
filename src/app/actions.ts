@@ -8,11 +8,14 @@ import { Customers, Invoices, Status } from "@/db/schema";
 import { db } from "@/db";
 import { and, eq, isNull } from "drizzle-orm";
 import Stripe from 'stripe';
+import { Resend } from 'resend';
+import InvoiceCreatedEmail from "@/emails/invoice-created";
 
 const host = process.env.HOST;
 const port = process.env.PORT;
 
 const stripe = new Stripe(String(process.env.STRIPE_API_SECRET));
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function createAction(formData: FormData) {
   const { userId, orgId } = await auth();
@@ -54,8 +57,21 @@ export async function createAction(formData: FormData) {
       id: Invoices.id,
     });
 
-  if (!customer?.id) throw new Error("Customer creation failed!");
-  if (!results || results.length === 0) throw new Error("Invoice creation failed!");
+  console.log('result [0] ID:', results[0].id);
+
+  try {
+    await resend.emails.send({
+      from: 'Mahady Hasan <info@mahady.online>',
+      to: ['marofbd@gmail.com'],
+      subject: 'You have a new invoice',
+      react: InvoiceCreatedEmail({ invoiceId: results[0].id }),
+    });
+  } catch (error) {
+    console.error('Error sending email:', error);
+  }
+
+  // if (!customer?.id) throw new Error("Customer creation failed!");
+  // if (!results || results.length === 0) throw new Error("Invoice creation failed!");
 
   redirect(`/invoices/${results[0].id}`);
 }
@@ -170,8 +186,8 @@ export async function createPayment(formData: FormData) {
       },
     ],
     mode: 'payment',
-    success_url: `${origin}/invoices/${id}/payment?status=success`,
-    cancel_url: `${origin}/invoices/${id}/payment?status=canceled`,
+    success_url: `${origin}/invoices/${id}/payment?status=success&session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${origin}/invoices/${id}/payment?status=canceled&session_id={CHECKOUT_SESSION_ID}`,
   });
 
   if (!session.url) {
