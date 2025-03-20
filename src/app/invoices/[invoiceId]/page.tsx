@@ -5,7 +5,13 @@ import { db } from "@/db";
 import { Customers, Invoices } from "@/db/schema";
 import Invoice from './Invoice';
 
-export default async function InvoicePage({ params }: { params: { invoiceId: string; } }) {
+//import { NextPage, NextPageContext } from 'next';
+
+interface PageProps {
+  params: Promise<{ invoiceId: string }>;
+}
+
+export default async function InvoicePage({ params }: PageProps) {
   const { userId, orgId } = await auth();
 
   if (!userId) return;

@@ -14,7 +14,7 @@ import InvoiceCreatedEmail from "@/emails/invoice-created";
 // const host = process.env.HOST;
 // const port = process.env.PORT;
 
-const host = process.env.VERCEL_URL;
+const host = process.env.VERCEL_URL || process.env.HOST;
 const port = process.env.PORT || 3000;
 
 const stripe = new Stripe(String(process.env.STRIPE_API_SECRET));
