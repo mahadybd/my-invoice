@@ -11,8 +11,11 @@ import Stripe from 'stripe';
 import { Resend } from 'resend';
 import InvoiceCreatedEmail from "@/emails/invoice-created";
 
-const host = process.env.HOST;
-const port = process.env.PORT;
+// const host = process.env.HOST;
+// const port = process.env.PORT;
+
+const host = process.env.VERCEL_URL;
+const port = process.env.PORT || 3000;
 
 const stripe = new Stripe(String(process.env.STRIPE_API_SECRET));
 const resend = new Resend(process.env.RESEND_API_KEY);
