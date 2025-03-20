@@ -13,7 +13,7 @@ import Stripe from "stripe";
 const stripe = new Stripe(String(process.env.STRIPE_API_SECRET));
 
 interface InvoicePageProps {
-  params: { invoiceId: string; };
+  params: Promise<{ invoiceId: string; }>;
   searchParams: {
     status: string;
     session_id: string;
