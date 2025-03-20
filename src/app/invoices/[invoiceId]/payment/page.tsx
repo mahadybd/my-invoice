@@ -14,10 +14,10 @@ const stripe = new Stripe(String(process.env.STRIPE_API_SECRET));
 
 interface InvoicePageProps {
   params: Promise<{ invoiceId: string; }>;
-  searchParams: {
+  searchParams: Promise<{
     status: string;
     session_id: string;
-  };
+  }>;
 }
 
 export default async function InvoicePage({ params, searchParams }: InvoicePageProps) {
