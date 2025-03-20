@@ -41,7 +41,7 @@ Ensure you have the following installed:
 1. **Clone the repository:**
 
    ```sh
-   git clone https://github.com/yourusername/invoice-app.git
+   git clone https://github.com/mahadybd/my-invoice.git
    cd invoice-app
    ```
 
@@ -65,7 +65,7 @@ Ensure you have the following installed:
    yarn dev
    ```
 
-   The application will be available at **[http://localhost:3000](http://localhost:3000)**.
+   The application will be available at **[https://my-invoice-rho.vercel.app](https://my-invoice-rho.vercel.app)**.
 
 ---
 
